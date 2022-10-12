@@ -4,33 +4,14 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public Character character, characterHolder;
-
+    public Character enemy, boss, characterHolder;
+    public HealthBox healthBox, healthBoxHolder;
     public Transform player, spawner;
 
     [SerializeField]
     float xPos, zPos;
     public int enemyNum;
     private Vector3 cacheVector;
-
-    private float timer, secondsFloatTimer, spawnWaitTime;
-
-    public void Start()
-    {
-        OnInit();
-    }
-
-    private void Update()
-    {
-        Timer();
-        SpawnEnemy();
-    }
-
-    public void OnInit()
-    {
-        spawnWaitTime = 2;
-        enemyNum = LevelManager.Ins.enemyNum;
-    }
 
     public Vector3 GetRandomPosition(float min, float max)
     {
@@ -70,23 +51,14 @@ public class Spawner : MonoBehaviour
 
     public void SpawnEnemy()
     {
-        if(secondsFloatTimer > spawnWaitTime && enemyNum > 0)
-        {
-            characterHolder = SimplePool.Spawn<Character>(character, GetRandomPosition(-10, 10), Quaternion.identity);
-            IsOutOfBound(characterHolder.transform);
-            ResetTimer();
-            enemyNum--;
-        }
+        characterHolder = SimplePool.Spawn<Character>(enemy, GetRandomPosition(-10, 10), Quaternion.identity);
+        IsOutOfBound(characterHolder.transform);
     }
 
-    public void Timer()
+    public void SpawnHealthBox()
     {
-        timer += Time.deltaTime;
-        secondsFloatTimer = (float)(timer % 60);
-    }
-
-    public void ResetTimer()
-    {
-        timer = 0.0f;
+        Vector3 spawnPos = GetRandomPosition(-7, 7);
+        spawnPos.y -= 0.5f;
+        SimplePool.Spawn<HealthBox>(healthBox, spawnPos, Quaternion.identity);
     }
 }

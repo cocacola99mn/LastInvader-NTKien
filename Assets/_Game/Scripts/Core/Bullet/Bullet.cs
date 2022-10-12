@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Bullet : GameUnit
 {
+    public ParticleSystem explodeBulletVfx;
     public Transform bulletTransform;
+    public BulletType type;
     public Rigidbody rb;
 
     public float existCount, existTime;
     public int damage;
 
-    private void Update()
+    private void FixedUpdate()
     {
         OnUpdate();
     }
@@ -23,7 +25,6 @@ public class Bullet : GameUnit
     public virtual void OnInit()
     {
         rb.velocity = bulletTransform.forward * 20f;
-        damage = 10;
         existTime = 2;
         existCount = existTime;
     }

@@ -76,7 +76,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tf: {fileID: 0}
+  explodeBulletVfx: {fileID: 0}
   bulletTransform: {fileID: 2031905448151976509}
+  type: 1
   rb: {fileID: 2031905448151976448}
   existCount: 0
   existTime: 0

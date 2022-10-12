@@ -15,7 +15,8 @@ public class HealthBox : GameUnit
             if(character.heatlh < character.healthBar.maxHealth)
             {
                 character.OnGetHit(-healAmount);
-                Destroy(gameObject);
+                SimplePool.Despawn(this);
+                LevelManager.Ins.spawner.SpawnHealthBox();
             }
         }
     }

@@ -7,11 +7,16 @@ public class Player : Character
     public Joystick joyStick;
     public Gun gun;
 
+    public ParticleSystem dashVfx;
     public CharacterController controller;
-    private Vector3 direction, moveDirection;
+    private Vector3 direction, moveDirection, dashVfxPos;
 
-    private float targetAngle, angle, turnVelocity, turnTime, horizontal, vertical, dashDistance, dashTime, dashCooldown;
+    //Variable for Movement
+    private float targetAngle, angle, turnVelocity, turnTime, horizontal, vertical;
     private bool canDash;
+    //Variable for Dash
+    private float dashTime, dashCooldown, dashDuration, dashDurationTime;
+    
     void Start()
     {
         OnInit();
@@ -24,16 +29,18 @@ public class Player : Character
 
     public override void OnInit()
     {
-        atkRange = 6;
+        atkRange = 7;
         charSpeed = 5;
         turnTime = 0.1f;
         dashTime = 1;
-        dashDistance = 10;
-        dashCooldown = 2;
+        dashDuration = 0.15f;
         canDash = true;
         heatlh = 60;
         healthBar.maxHealth = healthBar.curHealth = heatlh;
         healthBar.healthFill.fillAmount = healthBar.curHealth / healthBar.maxHealth;
+        gun.charDamage = 10;
+        gun.fireRate = 2;
+        gun.coolDown = 1 / gun.fireRate;
     }
 
     public override void Action()
@@ -113,17 +120,23 @@ public class Player : Character
 
     public void Dash()
     {
+        dashVfxPos = charPos;
+        dashVfxPos += direction * 2;
+
         if (Input.GetKeyDown(KeyCode.Space) && canDash == true)
         {
             dashCooldown = Time.time + dashTime;
+            dashDurationTime = Time.time + dashDuration;
             canDash = false;
             if (direction.magnitude > 0)
             {
-                controller.Move(charSpeed * Time.deltaTime * MoveDirection() * dashDistance);
+                charSpeed = 15;
+                ParticlePool.Play(dashVfx, dashVfxPos, Quaternion.LookRotation(-direction));
             }
         }
 
         DashCoolDown();
+        DashDuration();
     }
 
     public void DashCoolDown()
@@ -131,6 +144,14 @@ public class Player : Character
         if(Time.time > dashCooldown)
         {
             canDash = true;
+        }
+    }
+
+    public void DashDuration()
+    {
+        if (Time.time > dashDurationTime)
+        {
+            charSpeed = 5;
         }
     }
 }

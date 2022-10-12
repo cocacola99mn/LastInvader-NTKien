@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChasingState : MonoBehaviour
+public class ChasingState : IState<Boss>
 {
-    // Start is called before the first frame update
-    void Start()
+    public void OnEnter(Boss boss)
     {
-        
+        boss.atkRange = 4;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnExecute(Boss boss)
     {
-        
+        boss.navMeshAgent.destination = LevelManager.Ins.player.charPos;
+        boss.OnContact();
+    }
+
+    public void OnExit(Boss boss)
+    {
+
     }
 }

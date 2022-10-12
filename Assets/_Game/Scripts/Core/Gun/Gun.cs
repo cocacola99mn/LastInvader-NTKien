@@ -9,7 +9,8 @@ public class Gun : MonoBehaviour
     public Bullet bullet, bulletHolder;
 
     public float fireRate;
-    float time, coolDown;
+    public int charDamage;
+    public float time, coolDown;
 
     void Start()
     {
@@ -19,8 +20,6 @@ public class Gun : MonoBehaviour
     public void OnInit()
     {
         time = 0;
-        fireRate = 3;
-        coolDown = 1 / fireRate;
     }
 
     public void OnAttack()
@@ -39,24 +38,25 @@ public class Gun : MonoBehaviour
         bulletHolder = SimplePool.Spawn<Bullet>(bullet, shotPoints.position, shotPoints.rotation);
         OnTypeSpread(bullet);
         Cache.GetBullet(bulletHolder.gameObject).OnInit();
+        Cache.GetBullet(bulletHolder.gameObject).damage = charDamage;
     }
 
     private void OnTypeSpread(Bullet bullet)
     {
-        if(Cache.GetSpread(bulletHolder.gameObject) != null)
+        if(bulletHolder.type.Equals(BulletType.SPREAD))
         {
-            Spread right = SimplePool.Spawn<Spread>(bullet, shotPoints.position, shotPoints.rotation);
-            Spread middleRight = SimplePool.Spawn<Spread>(bullet, shotPoints.position, shotPoints.rotation);
-            Spread left = SimplePool.Spawn<Spread>(bullet, shotPoints.position, shotPoints.rotation);
-            Spread middleLeft = SimplePool.Spawn<Spread>(bullet, shotPoints.position, shotPoints.rotation);
-            right.OnInit();
-            middleRight.OnInit();
-            left.OnInit();
-            middleLeft.OnInit();
-            right.ChangeEulerAngles(BulletAngles.right);
-            left.ChangeEulerAngles(BulletAngles.left);
-            middleRight.ChangeEulerAngles(BulletAngles.middleRight);
-            middleLeft.ChangeEulerAngles(BulletAngles.middleLeft);
+            SetBulletSpreadAngle(BulletAngles.right);
+            SetBulletSpreadAngle(BulletAngles.left);
+            SetBulletSpreadAngle(BulletAngles.middleRight);
+            SetBulletSpreadAngle(BulletAngles.middleLeft);
         }
+    }
+
+    public void SetBulletSpreadAngle(BulletAngles angles)
+    {
+        Spread spreadBullet = SimplePool.Spawn<Spread>(bullet, shotPoints.position, shotPoints.rotation);
+        spreadBullet.OnInit();
+        spreadBullet.ChangeEulerAngles(angles);
+        spreadBullet.damage = charDamage;
     }
 }

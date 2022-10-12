@@ -10,11 +10,6 @@ public class HealthBar : MonoBehaviour
     public float curHealth;
     public float maxHealth;
 
-    private void Start()
-    {
-        
-    }
-
     private void LateUpdate()
     {
         FreezeRotation();

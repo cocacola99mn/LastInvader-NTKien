@@ -11,9 +11,12 @@ public class Character : GameUnit, IHit
     public LayerMask targetLayer;
     public Vector3 charPos;
     public Collider[] colliders;
+    public ParticleSystem explodeVfx;
+    public DamageDisplay damageUI;
 
     public int heatlh;
     public float atkRange, charSpeed;
+    public bool isBoss = false;
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()

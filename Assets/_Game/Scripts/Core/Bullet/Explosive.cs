@@ -5,7 +5,7 @@ using UnityEngine;
 public class Explosive : Bullet
 {
     public LayerMask targetLayer;
-    Collider[] colliders;
+    public Collider[] colliders;
     float exRange;
 
     public override void OnInit()
@@ -21,13 +21,15 @@ public class Explosive : Bullet
 
     public void Explode()
     {
-        for (int i = 0; i < colliders.Length; i++)
+        foreach(Collider coll in colliders)
         {
-            if (colliders[i] != null)
+            if (coll != null)
             {
-                Cache.GetCharacter(colliders[i]).OnGetHit(damage);
+                Cache.GetCharacter(coll).OnGetHit(damage);
             }
         }
+
+        ParticlePool.Play(explodeBulletVfx, bulletTransform.position, Quaternion.Euler(0, 0, 0));
     }
 
     public override void BulletUpdate()

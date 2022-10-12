@@ -11,7 +11,8 @@ public enum UIID
     UICMainMenu = 1,
     UICFail = 2,
     UICVictory = 3,
-    UICHowToPlay = 4
+    UICHowToPlay = 4,
+    UICAbilityUpgrade = 5
 }
 
 public class UIManager : Singleton<UIManager>

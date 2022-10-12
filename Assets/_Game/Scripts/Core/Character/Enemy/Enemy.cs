@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Enemy : Character
 {
     [SerializeField]
-    private NavMeshAgent navMeshAgent;
+    public NavMeshAgent navMeshAgent;
     public Animation anim;
 
     float delay, delayCountDown;
@@ -77,13 +77,15 @@ public class Enemy : Character
             }
         }
 
-        //Add Any Explode Effect you want
+        ParticlePool.Play(explodeVfx, charPos, Quaternion.Euler(0, 0, 0));
         OnDespawn();
     }
 
     public override void OnGetHit(int damage)
     {
         base.OnGetHit(damage);
+        Vector3 uiPos = charPos;
+        SimplePool.Spawn<DamageDisplay>(damageUI, uiPos, Quaternion.identity);
         if (heatlh <= 0)
         {
             LevelManager.Ins.GainScore();
@@ -95,10 +97,6 @@ public class Enemy : Character
     {
         OnInit();
         SimplePool.Despawn(this);
-        LevelManager.Ins.enemyLeft--;
-        if(LevelManager.Ins.enemyLeft == 0)
-        {
-            LevelManager.Ins.NextWave();
-        }
+        LevelManager.Ins.OnEnemyDie();
     }
 }

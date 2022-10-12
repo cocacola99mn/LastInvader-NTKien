@@ -76,7 +76,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tf: {fileID: 0}
+  explodeBulletVfx: {fileID: 198948030977561794, guid: 0997de51c3e02bd498ddccf577fbe997, type: 3}
   bulletTransform: {fileID: 2150520175192345343}
+  type: 4
   rb: {fileID: 2150520175192345330}
   existCount: 0
   existTime: 0
@@ -84,6 +86,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  colliders: []
 --- !u!1 &2150520176030958201
 GameObject:
   m_ObjectHideFlags: 0
