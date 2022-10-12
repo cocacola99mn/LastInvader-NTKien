@@ -6,7 +6,7 @@ public class ChasingState : IState<Boss>
 {
     public void OnEnter(Boss boss)
     {
-        boss.atkRange = 4;
+        boss.atkRange = 3;
     }
 
     public void OnExecute(Boss boss)
