@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    [SerializeField] private Player player;
     public Transform shotPoints;
     public Bullet bullet, bulletHolder;
 
@@ -36,14 +37,14 @@ public class Gun : MonoBehaviour
     private void Shoot()
     {
         bulletHolder = SimplePool.Spawn<Bullet>(bullet, shotPoints.position, shotPoints.rotation);
-        OnTypeSpread(bullet);
+        OnTypeSpread(bulletHolder);
         Cache.GetBullet(bulletHolder.gameObject).OnInit();
         Cache.GetBullet(bulletHolder.gameObject).damage = charDamage;
     }
 
     private void OnTypeSpread(Bullet bullet)
     {
-        if(bulletHolder.type.Equals(BulletType.SPREAD))
+        if(bullet.type.Equals(BulletType.SPREAD))
         {
             SetBulletSpreadAngle(BulletAngles.right);
             SetBulletSpreadAngle(BulletAngles.left);

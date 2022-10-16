@@ -25,9 +25,9 @@ public class CanvasAbilityUpgrade : UICanvas
 
     public void HpUpButton()
     {
-        levelIns.player.heatlh += 30;
+        levelIns.player.health += 30;
         levelIns.player.healthBar.maxHealth += 30;
-        levelIns.player.healthBar.curHealth = levelIns.player.heatlh;
+        levelIns.player.healthBar.curHealth = levelIns.player.health;
         levelIns.player.healthBar.healthFill.fillAmount = levelIns.player.healthBar.curHealth / levelIns.player.healthBar.maxHealth;
         levelIns.NextWave();
         Close();
@@ -35,7 +35,7 @@ public class CanvasAbilityUpgrade : UICanvas
 
     public void SpdUpButton()
     {
-        levelIns.player.charSpeed += 1;
+        levelIns.player.charSpeedDefault ++;
         levelIns.NextWave();
         Close();
     }

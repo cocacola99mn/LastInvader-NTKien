@@ -13,12 +13,12 @@ public class Spawner : MonoBehaviour
     public int enemyNum;
     private Vector3 cacheVector;
 
-    public Vector3 GetRandomPosition(float min, float max)
+    public Vector3 GetRandomPos(float min, float max, float boundaryOffset)
     {
         xPos = Random.Range(min, max);
         zPos = Random.Range(min, max);
-        //Avoid enemy spawn too near player
-        while (xPos < 5 && zPos < 5 && xPos > -5 && zPos > -5)
+
+        while (Mathf.Abs(xPos) < boundaryOffset && Mathf.Abs(zPos) < boundaryOffset)
         {
             xPos = Random.Range(min, max);
             zPos = Random.Range(min, max);
@@ -27,13 +27,12 @@ public class Spawner : MonoBehaviour
         cacheVector.x = xPos;
         cacheVector.y = 0;
         cacheVector.z = zPos;
-        cacheVector = player.position + cacheVector;
 
         return cacheVector;
     }
 
     //Check if object is outside the boundary, if true, send enemy inside the boundary
-    public void IsOutOfBound(Transform objectTf)
+    /*public void IsOutOfBound(Transform objectTf)
     {
         Vector3 localPos = objectTf.localPosition;
         Vector3 newPos;
@@ -47,17 +46,16 @@ public class Spawner : MonoBehaviour
             newPos.z = Random.Range(-newPosValue, newPosValue);
             objectTf.localPosition = newPos;
         }
-    }
+    }*/
 
     public void SpawnEnemy()
     {
-        characterHolder = SimplePool.Spawn<Character>(enemy, GetRandomPosition(-10, 10), Quaternion.identity);
-        IsOutOfBound(characterHolder.transform);
+        characterHolder = SimplePool.Spawn<Character>(enemy, GetRandomPos(-20, 20, 15), Quaternion.identity);
     }
 
     public void SpawnHealthBox()
     {
-        Vector3 spawnPos = GetRandomPosition(-7, 7);
+        Vector3 spawnPos = GetRandomPos(-12, 12, 5);
         spawnPos.y -= 0.5f;
         SimplePool.Spawn<HealthBox>(healthBox, spawnPos, Quaternion.identity);
     }

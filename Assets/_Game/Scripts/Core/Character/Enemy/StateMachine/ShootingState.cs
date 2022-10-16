@@ -6,7 +6,7 @@ public class ShootingState : IState<Boss>
 {
     public void OnEnter(Boss boss)
     {
-
+        boss.ChangeAnim(GameConstant.IDLE_ANIM);
     }
 
     public void OnExecute(Boss boss)

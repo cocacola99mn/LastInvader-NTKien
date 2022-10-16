@@ -12,12 +12,17 @@ public class HealthBox : GameUnit
         if (other.CompareTag(GameConstant.PLAYER_TAG))
         {
             character = Cache.GetCharacter(other);
-            if(character.heatlh < character.healthBar.maxHealth)
+            if(character.health < character.healthBar.maxHealth)
             {
                 character.OnGetHit(-healAmount);
                 SimplePool.Despawn(this);
                 LevelManager.Ins.spawner.SpawnHealthBox();
             }
+        }
+        if (other.CompareTag(GameConstant.OBSTACLE_TAG))
+        {
+            SimplePool.Despawn(this);
+            LevelManager.Ins.spawner.SpawnHealthBox();
         }
     }
 }

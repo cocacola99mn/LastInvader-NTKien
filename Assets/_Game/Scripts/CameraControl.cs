@@ -6,7 +6,8 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour
 {
     [SerializeField] Transform Target, Camera;
-    Vector3 zOffset, cameraFollow;
+    [SerializeField]Vector3 cameraFollow, clampPos, smoothPos, minValue, maxValue;
+    float clampX, clampY, clampZ, zOffset;
     
     void Start()
     {
@@ -20,18 +21,21 @@ public class CameraControl : MonoBehaviour
 
     private void OnInit()
     {
-        zOffset.z = Camera.position.z - Target.position.z;
+        zOffset = -10;
     }
 
     public void FollowPlayer()
     {
-        if (Target != null)
-        {
-            cameraFollow.x = Target.position.x;
-            cameraFollow.y = Camera.position.y;
-            cameraFollow.z = Target.position.z + zOffset.z;
+        CameraClamp();
+        clampPos = new Vector3(clampX, clampY, clampZ);
+        smoothPos = Vector3.Lerp(Target.position, clampPos, 1);
+        Camera.position = smoothPos;
+    }
 
-            Camera.position = cameraFollow;
-        }
+    public void CameraClamp()
+    {
+        clampX = Mathf.Clamp(Target.position.x, minValue.x, maxValue.x);
+        clampY = Mathf.Clamp(Target.position.y, minValue.y, maxValue.y);
+        clampZ = Mathf.Clamp(Target.position.z + zOffset, minValue.z, maxValue.z);
     }
 }

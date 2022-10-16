@@ -9,8 +9,9 @@ public class LevelManager : Singleton<LevelManager>
     public Player player;
     public Spawner spawner;
     public DamageDisplay damageDisplay;
+    Boss boss;
 
-    public GameObject playerObject, UIGameplay, waveDisplayTextObject;
+    public GameObject playerObject, UIGameplay, waveDisplayTextObject, bossHealthBar;
     public Text pointText, bulletText, waveNum, waveDisplayText;
     WaitForSeconds displayTime;
     
@@ -36,9 +37,9 @@ public class LevelManager : Singleton<LevelManager>
         point = 0;
         wave = 1;
         waveNum.text = wave.ToString();
-        enemyNum = 10;
+        enemyNum = 40;
         enemyLeft = enemyNum;
-        spawnWaitTime = 1.5f;
+        spawnWaitTime = 0.5f;
         displayTime = new WaitForSeconds(2);
         playerDie = false;
         spawner.SpawnHealthBox();
@@ -55,11 +56,11 @@ public class LevelManager : Singleton<LevelManager>
         wave++;
         if(wave == 3)
         {
-            SimplePool.Spawn<Boss>(spawner.boss, Vector3.zero, Quaternion.identity);
+            boss = SimplePool.Spawn<Boss>(spawner.boss, Vector3.zero, Quaternion.identity);
         }
         else
         {
-            enemyNum += 5;
+            enemyNum += 20;
             enemyLeft = enemyNum;
             spawner.enemyNum = enemyNum;
         }
@@ -70,7 +71,6 @@ public class LevelManager : Singleton<LevelManager>
 
     public void SetLevelStart(bool state)
     {
-        playerObject.SetActive(state);
         UIGameplay.SetActive(state);
         levelStart = state;
     }
@@ -96,7 +96,9 @@ public class LevelManager : Singleton<LevelManager>
 
     public void OnVictory()
     {
-        SetLevelStart(false);
+        UIGameplay.SetActive(false);
+        levelStart = false;
+        player.ChangeAnim(GameConstant.WIN_ANIM);
         UIManager.Ins.OpenUI(UIID.UICVictory);
     }
 
@@ -104,6 +106,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         SetLevelStart(false);
         playerDie = true;
+        boss.healthBarTop.SetActive(false);
         UIManager.Ins.OpenUI(UIID.UICFail);
     }
 

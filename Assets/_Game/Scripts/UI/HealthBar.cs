@@ -7,6 +7,7 @@ public class HealthBar : MonoBehaviour
 {
     public Transform barTransform;
     public Image healthFill;
+    public Text curHealthText, maxHealthText;
     public float curHealth;
     public float maxHealth;
 

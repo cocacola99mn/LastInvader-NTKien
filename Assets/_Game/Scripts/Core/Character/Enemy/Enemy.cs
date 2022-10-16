@@ -7,10 +7,9 @@ public class Enemy : Character
 {
     [SerializeField]
     public NavMeshAgent navMeshAgent;
-    public Animation anim;
 
-    float delay, delayCountDown;
-    bool exploded, touchPlayer;
+    float delay, defaultSpeed;
+    bool touchPlayer;
     int explodeDamage;
 
     void Start()
@@ -26,14 +25,14 @@ public class Enemy : Character
     public override void OnInit()
     {
         atkRange = 1;
-        delay = 1;
-        delayCountDown = delay;
-        exploded = false;
+        delay = 2;
+        dieAnimTime = 1;
+        defaultSpeed = 5;
+        navMeshAgent.speed = defaultSpeed;
         touchPlayer = false;
         explodeDamage = 20;
-        heatlh = 30;
-        healthBar.maxHealth = healthBar.curHealth = heatlh;
-        healthBar.healthFill.fillAmount = healthBar.curHealth / healthBar.maxHealth;
+        health = 30;
+        charCollider.enabled = true;
     }
 
     public override void Action()
@@ -52,17 +51,16 @@ public class Enemy : Character
         if (colliders.Length > 0)
         {
             touchPlayer = true;
+            ChangeAnim(GameConstant.ATTACK_ANIM);
         }
 
         if (touchPlayer)
         {
-            anim.Play();
-            atkRange = 2;
-            delayCountDown -= Time.deltaTime;
-            if(delayCountDown <= 0 && !exploded)
+            atkRange = 3;
+            navMeshAgent.speed = 0;
+            if(TimeCounter(ref delay))
             {
                 Explode();
-                exploded = true;
             }
         }
     }
@@ -85,10 +83,16 @@ public class Enemy : Character
     {
         base.OnGetHit(damage);
         Vector3 uiPos = charPos;
-        SimplePool.Spawn<DamageDisplay>(damageUI, uiPos, Quaternion.identity);
-        if (heatlh <= 0)
+        SimplePool.Spawn<DamageDisplay>(damageUI, uiPos, Quaternion.Euler(60,0,0));
+    }
+
+    public override void DieEffect()
+    {
+        base.DieEffect();
+        navMeshAgent.speed = 0;
+        LevelManager.Ins.GainScore();
+        if (TimeCounter(ref dieAnimTime))
         {
-            LevelManager.Ins.GainScore();
             OnDespawn();
         }
     }
