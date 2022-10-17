@@ -106,7 +106,10 @@ public class LevelManager : Singleton<LevelManager>
     {
         SetLevelStart(false);
         playerDie = true;
-        boss.healthBarTop.SetActive(false);
+        if(boss != null)
+        {
+            boss.healthBarTop.SetActive(false);
+        }
         UIManager.Ins.OpenUI(UIID.UICFail);
     }
 

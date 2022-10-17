@@ -6,6 +6,7 @@ public class CanvasHowToPlay : UICanvas
 {
     public void BackButton()
     {
+        GameManager.Ins.cameraScaler.matchWidthOrHeight = 1;
         Close();
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
     }

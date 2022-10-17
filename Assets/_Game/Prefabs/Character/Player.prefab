@@ -105,10 +105,11 @@ MonoBehaviour:
   colliders: []
   explodeVfx: {fileID: 0}
   damageUI: {fileID: 0}
-  heatlh: 0
+  health: 0
   atkRange: 0
   charSpeed: 0
   charSpeedDefault: 0
+  dieAnimTime: 0
   isBoss: 0
   joyStick: {fileID: 0}
   gun: {fileID: 1852633622}

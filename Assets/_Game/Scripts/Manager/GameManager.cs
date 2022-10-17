@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
     Scene scene;
-
+    public CanvasScaler cameraScaler;
     protected void Awake()
     {
         OnInit();
@@ -25,6 +26,7 @@ public class GameManager : Singleton<GameManager>
 
         scene = SceneManager.GetActiveScene();
         UIManager.Ins.OpenUI(UIID.UICMainMenu);
+       
     }
 
     public void Restart()

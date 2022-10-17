@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CanvasMainMenu : UICanvas
 {
+
     public void StartButton()
     {
         LevelManager.Ins.SetLevelStart(true);
@@ -12,6 +13,7 @@ public class CanvasMainMenu : UICanvas
 
     public void HowToPlayButton()
     {
+        GameManager.Ins.cameraScaler.matchWidthOrHeight = 0.4f;
         UIManager.Ins.OpenUI(UIID.UICHowToPlay);
         Close();
     }

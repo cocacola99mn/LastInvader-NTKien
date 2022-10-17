@@ -105,6 +105,10 @@ public class Boss : Character
         {
             ChangeState(chasingState);
         }
+        if (health <= 0)
+        {
+            LevelManager.Ins.GainScore();
+        }
     }
 
     public override void DieEffect()
@@ -112,11 +116,9 @@ public class Boss : Character
         base.DieEffect();
         navMeshAgent.speed = 0;
         exploded = true;
-        LevelManager.Ins.GainScore();
         ChangeState(dieState);
         if (TimeCounter(ref dieAnimTime))
         {
-            LevelManager.Ins.GainScore();
             SimplePool.Despawn(this);
             LevelManager.Ins.OnVictory();
         }

@@ -84,13 +84,16 @@ public class Enemy : Character
         base.OnGetHit(damage);
         Vector3 uiPos = charPos;
         SimplePool.Spawn<DamageDisplay>(damageUI, uiPos, Quaternion.Euler(60,0,0));
+        if(health <= 0)
+        {
+            LevelManager.Ins.GainScore();
+        }
     }
 
     public override void DieEffect()
     {
         base.DieEffect();
         navMeshAgent.speed = 0;
-        LevelManager.Ins.GainScore();
         if (TimeCounter(ref dieAnimTime))
         {
             OnDespawn();
@@ -100,7 +103,7 @@ public class Enemy : Character
     public void OnDespawn()
     {
         OnInit();
-        SimplePool.Despawn(this);
         LevelManager.Ins.OnEnemyDie();
+        SimplePool.Despawn(this);
     }
 }
