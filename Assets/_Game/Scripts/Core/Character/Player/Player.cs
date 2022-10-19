@@ -129,7 +129,6 @@ public class Player : Character
     public void Dash()
     {
         dashVfxPos = charPos;
-        dashVfxPos += direction * 2;
 
         if (Input.GetKeyDown(KeyCode.Space) && canDash == true)
         {
@@ -138,7 +137,8 @@ public class Player : Character
             canDash = false;
             if (direction.magnitude > 0)
             {
-                charSpeed = 15;
+                charSpeed = 25;
+                controller.center = new Vector3(0, 10, 0);
                 ParticlePool.Play(dashVfx, dashVfxPos, Quaternion.LookRotation(-direction));
             }
         }
@@ -149,6 +149,7 @@ public class Player : Character
         }
         if(TimeCounter(ref dashDurationCounter))
         {
+            controller.center = Vector3.zero;
             charSpeed = charSpeedDefault;
         }
     }
